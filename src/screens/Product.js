@@ -1,13 +1,15 @@
 import React from "react";
 import { Text, View, StyleSheet, Image, Pressable } from "react-native";
+import moment from "moment";
 
 const Product = ({ product, navigation }) => {
   const productViewHandler = (product) => {
     navigation.navigate("Product", { product: product });
   };
 
-  const newProduct =
-    parseInt(Date().slice(7, 10) - product.created_at.slice(8, 10)) <= 3;
+  //Moment.js - checks if the product is new (created at least 3 days ago)
+  const days = moment().diff(product.created_at, "days");
+  const newProduct = days < 3;
 
   return (
     <View style={styles.body}>
@@ -16,8 +18,12 @@ const Product = ({ product, navigation }) => {
           productViewHandler(product);
         }}
       >
+        {/* {product.user.verified ? (
+          <Text style={styles.verified}>Verified</Text>
+        ) : null} */}
         <View style={styles.container}>
           <Image style={styles.images} source={{ uri: product.images }} />
+
           <Text style={styles.name}>{product.name}</Text>
         </View>
         {newProduct ? <Text style={styles.newBanner}>New</Text> : null}
@@ -43,8 +49,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    marginHorizontal: 15,
-    marginVertical: 25,
+    marginHorizontal: 10,
+    marginVertical: 15,
   },
   images: {
     height: 150,
@@ -66,6 +72,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     transform: [{ rotate: "45deg" }],
     color: "white",
+  },
+  verified: {
+    position: "absolute",
+    bottom: 65,
+    zIndex: 1,
+    left: 60,
+    backgroundColor: "#f26867",
+    paddingHorizontal: 15,
+    paddingVertical: 3,
+    color: "white",
+    borderRadius: 20,
+    fontSize: 10,
   },
 });
 

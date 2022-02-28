@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../App";
 import {
   ScrollView,
   View,
@@ -6,18 +7,27 @@ import {
   StyleSheet,
   Image,
   Pressable,
+  StatusBar,
 } from "react-native";
 import NavMenu from "../components/NavMenu";
 const Home = ({ navigation }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { userContext, loggedInContext } = useContext(UserContext);
+  const loggedIn = loggedInContext[0];
+  const setLoggedIn = loggedInContext[1];
+
   const navigationHandler = (screen) => {
     navigation.navigate(screen);
   };
 
   return (
     <ScrollView>
+      <StatusBar animated={true} backgroundColor="black" />
       <View style={styles.container}>
-        <NavMenu navigation={navigation} loggedIn={loggedIn} />
+        <NavMenu
+          navigation={navigation}
+          loggedIn={loggedIn}
+          setLoggedIn={setLoggedIn}
+        />
 
         <View style={styles.body}>
           <Pressable

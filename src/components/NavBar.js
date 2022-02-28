@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React from "react";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import NavButton from "./NavButton";
 
-const NavBar = ({ openMenu, setOpenMenu }) => {
+const NavBar = ({ openMenu, setOpenMenu, navigation }) => {
+  const navigationHandler = (screen) => {
+    navigation.navigate(screen);
+  };
+
   return (
     <View style={styles.nav}>
       <NavButton openMenu={openMenu} setOpenMenu={setOpenMenu} />
-      <Text style={styles.header}>MOXIE</Text>
+      <Pressable onPress={() => navigationHandler("Browse")}>
+        <Text style={styles.header}>MOXIE</Text>
+      </Pressable>
     </View>
   );
 };

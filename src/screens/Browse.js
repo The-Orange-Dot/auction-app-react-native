@@ -1,11 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { ScrollView, Text, View, StyleSheet, Pressable } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  Pressable,
+  Dimensions,
+} from "react-native";
 import NavMenu from "../components/NavMenu";
 import Product from "./Product";
+import { UserContext } from "../../App";
 
 const Browse = ({ navigation }) => {
+  const { userContext, loggedInContext, userIdContext } =
+    useContext(UserContext);
+  const loggedIn = loggedInContext[0];
+  const setLoggedIn = loggedInContext[1];
   const [products, setProducts] = useState([]);
   const [productsLoaded, setProductsLoaded] = useState(false);
+  const userId = userIdContext[0];
+  const setUserId = userIdContext[1];
+  const user = userContext[0];
+  const setUser = userContext[1];
 
   useEffect(() => {
     fetch("https://boiling-forest-19458.herokuapp.com/products")
@@ -14,6 +31,33 @@ const Browse = ({ navigation }) => {
         setProducts(products);
         setProductsLoaded(true);
       });
+
+    if (userId !== 0) {
+      fetch("https://boiling-forest-19458.herokuapp.com/user", {
+        headers: {
+          user: userId,
+        },
+      }).then((r) => {
+        if (r.ok) {
+          r.json().then((userData) => {
+            setUser(userData);
+            setLoggedIn(true);
+          });
+        } else {
+          setLoggedIn(false);
+        }
+      });
+    }
+
+    const getData = async () => {
+      try {
+        const value = await AsyncStorage.getItem("user");
+        if (value !== null) {
+          return value;
+        }
+      } catch (error) {}
+    };
+    getData().then((thing) => setUserId);
   }, []);
 
   const product = products.map((product) => {
@@ -25,7 +69,11 @@ const Browse = ({ navigation }) => {
   return (
     <View>
       <ScrollView>
-        <NavMenu navigation={navigation} />
+        <NavMenu
+          navigation={navigation}
+          loggedIn={loggedIn}
+          setLoggedIn={setLoggedIn}
+        />
         <View style={styles.body}>
           {productsLoaded ? (
             <Text>{product}</Text>
