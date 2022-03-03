@@ -1,17 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Text, View, Pressable, StyleSheet } from "react-native";
-import { UserContext } from "../../App";
 import NavBar from "./NavBar";
 import { numberWithCommas } from "./NumberWithCommas";
+import ChargePointsModal from "./ChargePointsModal";
 
-const NavMenu = ({ navigation, loggedIn, setUser, setLoggedIn }) => {
+const NavMenu = ({ navigation, loggedIn, setUser, setLoggedIn, user }) => {
   const [openMenu, setOpenMenu] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const navigationHandler = (screen) => {
     navigation.navigate(screen);
     setOpenMenu(false);
   };
-  const { userContext } = useContext(UserContext);
-  const user = userContext[0];
 
   const logOutHandler = () => {
     fetch("https://boiling-forest-19458.herokuapp.com/logout", {
@@ -36,12 +35,23 @@ const NavMenu = ({ navigation, loggedIn, setUser, setLoggedIn }) => {
       {openMenu ? (
         <View style={loggedIn ? styles.menuLoggedIn : styles.menuLoggedOut}>
           {loggedIn ? (
-            <View style={styles.quickViewContainer}>
-              <Text style={styles.quickViewText}>{user.username}</Text>
-              <Text style={styles.quickViewText}>
-                Points: {numberWithCommas(user.points)}
-              </Text>
-            </View>
+            <>
+              <View style={styles.quickViewContainer}>
+                <Text style={styles.quickViewText}>{user.username}</Text>
+                <Text style={styles.quickViewText}>
+                  Points: {numberWithCommas(user.points)}
+                </Text>
+              </View>
+              <Pressable
+                style={styles.button}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                  setOpenMenu(false);
+                }}
+              >
+                <Text style={styles.menuText}>Charge Points</Text>
+              </Pressable>
+            </>
           ) : null}
           <Pressable
             style={styles.button}
@@ -103,6 +113,12 @@ const NavMenu = ({ navigation, loggedIn, setUser, setLoggedIn }) => {
           ) : null}
         </View>
       ) : null}
+      <ChargePointsModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        user={user}
+        setUser={setUser}
+      />
     </>
   );
 };
@@ -114,7 +130,7 @@ const styles = StyleSheet.create({
     top: 70,
     right: 0,
     width: 250,
-    height: 320,
+    height: 370,
     padding: 2,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
   },

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -9,13 +9,9 @@ import {
   Pressable,
 } from "react-native";
 import NavMenu from "../components/NavMenu";
-import { UserContext } from "../../App";
 import { Picker } from "@react-native-picker/picker";
 
-const Sell = ({ navigation }) => {
-  const { loggedInContext } = useContext(UserContext);
-  const loggedIn = loggedInContext[0];
-  const setLoggedIn = loggedInContext[1];
+const Sell = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
   const [selected, setSelected] = useState("");
   const [itemName, setItemName] = useState("");
   const [images, setImages] = useState("");
@@ -51,6 +47,8 @@ const Sell = ({ navigation }) => {
         navigation={navigation}
         loggedIn={loggedIn}
         setLoggedIn={setLoggedIn}
+        user={user}
+        setUser={setUser}
       />
       <View style={styles.body}>
         <Text style={styles.sellHeader}>Sell on MOXIE!</Text>

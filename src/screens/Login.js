@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   TextInput,
   Text,
@@ -8,17 +8,18 @@ import {
   Pressable,
 } from "react-native";
 import NavMenu from "../components/NavMenu";
-import { UserContext } from "../../App";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Login = ({ navigation }) => {
-  const { userContext, loggedInContext, userIdContext } =
-    useContext(UserContext);
-  const loggedIn = loggedInContext[0];
-  const setLoggedIn = loggedInContext[1];
+const Login = ({
+  navigation,
+  loggedIn,
+  setLoggedIn,
+  setUserId,
+  user,
+  setUser,
+}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const setUserId = userIdContext[1];
 
   const submitHandler = () => {
     fetch("https://boiling-forest-19458.herokuapp.com/login", {
@@ -48,7 +49,12 @@ const Login = ({ navigation }) => {
 
   return (
     <ScrollView>
-      <NavMenu navigation={navigation} loggedIn={loggedIn} />
+      <NavMenu
+        navigation={navigation}
+        setUser={setUser}
+        loggedIn={loggedIn}
+        user={user}
+      />
       <View style={styles.body}>
         <View style={styles.inputContainer}>
           <Text>Login</Text>

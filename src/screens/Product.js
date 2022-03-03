@@ -1,6 +1,11 @@
 import React from "react";
 import { Text, View, StyleSheet, Image, Pressable } from "react-native";
 import moment from "moment";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
+]);
 
 const Product = ({ product, navigation, setProducts }) => {
   const productViewHandler = (product) => {

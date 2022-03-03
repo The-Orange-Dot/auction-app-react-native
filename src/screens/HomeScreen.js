@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { UserContext } from "../../App";
+import React from "react";
 import {
   ScrollView,
   View,
@@ -10,11 +9,7 @@ import {
   StatusBar,
 } from "react-native";
 import NavMenu from "../components/NavMenu";
-const Home = ({ navigation }) => {
-  const { userContext, loggedInContext } = useContext(UserContext);
-  const loggedIn = loggedInContext[0];
-  const setLoggedIn = loggedInContext[1];
-
+const HomeScreen = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
   const navigationHandler = (screen) => {
     navigation.navigate(screen);
   };
@@ -27,6 +22,8 @@ const Home = ({ navigation }) => {
           navigation={navigation}
           loggedIn={loggedIn}
           setLoggedIn={setLoggedIn}
+          user={user}
+          setUser={setUser}
         />
 
         <View style={styles.body}>
@@ -64,4 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default HomeScreen;

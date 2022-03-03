@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,36 +9,33 @@ import {
   Dimensions,
 } from "react-native";
 import NavMenu from "../components/NavMenu";
-import { UserContext } from "../../App";
 
-const Tickets = ({ navigation }) => {
-  const { userContext, loggedInContext } = useContext(UserContext);
-  const loggedIn = loggedInContext[0];
-  const setLoggedIn = loggedInContext[1];
-  const user = userContext[0];
-  const [products, setProducts] = useState([]);
+const Tickets = ({
+  navigation,
+  loggedIn,
+  setLoggedIn,
+  user,
+  products,
+  setProducts,
+}) => {
   const [selected, setSelected] = useState("bidding");
   const [sellerProduct, setSellerProduct] = useState([]);
   const [loaded, setIsLoaded] = useState(false);
 
   //Fetches products and filters them to find user's items
   useEffect(() => {
-    fetch("https://boiling-forest-19458.herokuapp.com/products")
-      .then((r) => r.json())
-      .then((products) => {
-        if (products.length !== 0) {
-          let filteredItems = products.filter(
-            (product) =>
-              product.buyers !== null && product.buyers.includes(`${user.id}`)
-          );
-          let sellerItems = products.filter((product) => {
-            return product.user_id === user.id;
-          });
-          setProducts(filteredItems);
-          setSellerProduct(sellerItems);
-          setIsLoaded(true);
-        }
+    if (products.length !== 0) {
+      let filteredItems = products.filter(
+        (product) =>
+          product.buyers !== null && product.buyers.includes(`${user.id}`)
+      );
+      let sellerItems = products.filter((product) => {
+        return product.user_id === user.id;
       });
+      setProducts(filteredItems);
+      setSellerProduct(sellerItems);
+      setIsLoaded(true);
+    }
   }, []);
 
   //Maps through Buy Items

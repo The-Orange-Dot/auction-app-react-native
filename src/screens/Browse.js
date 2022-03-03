@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ScrollView,
   Text,
@@ -10,40 +10,19 @@ import {
 } from "react-native";
 import NavMenu from "../components/NavMenu";
 import Product from "./Product";
-import { UserContext } from "../../App";
 import ChargePointsModal from "../components/ChargePointsModal";
 
-const Browse = ({ navigation }) => {
-  const { userContext, loggedInContext, userIdContext } =
-    useContext(UserContext);
-  const loggedIn = loggedInContext[0];
-  const setLoggedIn = loggedInContext[1];
-  const setUserId = userIdContext[1];
-  const user = userContext[0];
-  const setUser = userContext[1];
-  const [products, setProducts] = useState([]);
-  const [productsLoaded, setProductsLoaded] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  useEffect(() => {
-    fetch("https://boiling-forest-19458.herokuapp.com/products")
-      .then((r) => r.json())
-      .then((products) => {
-        setProducts(products);
-        setProductsLoaded(true);
-      });
-
-    const getData = async () => {
-      try {
-        const value = await AsyncStorage.getItem("user");
-        if (value !== null) {
-          return value;
-        }
-      } catch (error) {}
-    };
-    getData().then((thing) => setUserId);
-  }, []);
-
+const Browse = ({
+  navigation,
+  loggedIn,
+  setLoggedIn,
+  user,
+  setUser,
+  setProducts,
+  products,
+  setProductsLoaded,
+  productsLoaded,
+}) => {
   const product = products.map((product) => {
     return (
       <Product
@@ -62,6 +41,8 @@ const Browse = ({ navigation }) => {
           navigation={navigation}
           loggedIn={loggedIn}
           setLoggedIn={setLoggedIn}
+          user={user}
+          setUser={setUser}
         />
         <View style={styles.body}>
           {productsLoaded ? (
@@ -86,12 +67,6 @@ const Browse = ({ navigation }) => {
           <Text style={styles.chargeText}>Charge points</Text>
         </Pressable>
       ) : null}
-      <ChargePointsModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        user={user}
-        setUser={setUser}
-      />
     </View>
   );
 };
@@ -122,21 +97,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loadingText: { fontWeight: "bold", fontSize: 15 },
-  charge: {
-    position: "absolute",
-    right: 5,
-    bottom: 0,
-    width: 100,
-    height: 50,
-    backgroundColor: "#f26867",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingBottom: 10,
-  },
-  chargeText: {
-    color: "white",
-  },
 });
 
 export default Browse;

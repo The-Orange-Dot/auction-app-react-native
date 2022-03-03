@@ -1,14 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Text, View, ScrollView, StyleSheet, Image } from "react-native";
-import { UserContext } from "../../App";
 import NavMenu from "../components/NavMenu";
 
-const Account = ({ navigation }) => {
-  const { userContext, loggedInContext } = useContext(UserContext);
-  const loggedIn = loggedInContext[0];
-  const setLoggedIn = loggedInContext[1];
-  const user = userContext[0];
-
+const Account = ({ navigation, user, loggedIn, setLoggedIn, setUser }) => {
   const month = [
     "January",
     "February",
@@ -31,6 +25,8 @@ const Account = ({ navigation }) => {
         navigation={navigation}
         loggedIn={loggedIn}
         setLoggedIn={setLoggedIn}
+        user={user}
+        setUser={setUser}
       />
 
       <View style={styles.body}>

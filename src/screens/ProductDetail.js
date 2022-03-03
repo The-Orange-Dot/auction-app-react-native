@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   Text,
@@ -6,21 +6,20 @@ import {
   Image,
   StyleSheet,
   Pressable,
-  Modal,
-  Button,
 } from "react-native";
 import BuyTicketModal from "../components/BuyTicketModal";
 import NavMenu from "../components/NavMenu";
 import { numberWithCommas } from "../components/NumberWithCommas";
-import { UserContext } from "../../App";
 
-const ProductDetail = ({ route, navigation }) => {
+const ProductDetail = ({
+  route,
+  navigation,
+  loggedIn,
+  setLoggedIn,
+  user,
+  setUser,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { loggedInContext, userContext } = useContext(UserContext);
-  const loggedIn = loggedInContext[0];
-  const setLoggedIn = loggedInContext[1];
-  const user = userContext[0];
-  const setUser = userContext[1];
   const [tickets, setTickets] = useState(route.params.product.ticketsRemaining);
 
   const pricePerTicket =
@@ -34,6 +33,8 @@ const ProductDetail = ({ route, navigation }) => {
             navigation={navigation}
             loggedIn={loggedIn}
             setLoggedIn={setLoggedIn}
+            user={user}
+            setUser={setUser}
           />
           <View style={styles.imageContainer}>
             <Image
