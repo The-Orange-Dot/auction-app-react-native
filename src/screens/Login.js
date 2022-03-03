@@ -37,7 +37,7 @@ const Login = ({ navigation }) => {
           AsyncStorage.setItem("user", userData.cookies.user);
           setUserId(userData.cookies.user);
           setLoggedIn(true);
-          navigation.navigate("Browse");
+          navigation.goBack();
         });
       } else {
         console.log("login failed");
@@ -62,6 +62,7 @@ const Login = ({ navigation }) => {
             name="password"
             style={styles.textInput}
             placeholder="Password"
+            secureTextEntry={true}
             onChangeText={(newText) => {
               setPassword(newText);
             }}

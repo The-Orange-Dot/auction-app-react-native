@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   verifiedText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 14,
   },
   ratingContainer: {
     width: "50%",

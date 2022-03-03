@@ -1,8 +1,49 @@
-import React from "react";
-import { Modal, View, Text, Button, StyleSheet, Pressable } from "react-native";
+import React, { useState } from "react";
+import { Modal, View, Text, StyleSheet, Pressable } from "react-native";
 import { numberWithCommas } from "./NumberWithCommas";
 
-const BuyTicketModal = ({ setModalVisible, modalVisible, product, user }) => {
+const BuyTicketModal = ({
+  setModalVisible,
+  modalVisible,
+  product,
+  user,
+  setUser,
+  setProducts,
+  setTickets,
+  tickets,
+}) => {
+  const ticketPrice = product.price / product.tickets;
+  const buyTicket = (item, value) => {
+    fetch(
+      `https://boiling-forest-19458.herokuapp.com/users/buy_ticket/${user.id}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          points: user.points,
+          product_id: item.id,
+          tickets_remaining: tickets,
+        }),
+      }
+    )
+      .then((r) => r.json())
+      .then((boughtProduct) => {
+        console.log(boughtProduct);
+        //Updates Points
+        // console.log(user);
+        const finalValue = user.points - value;
+        const ticketsBought = user.tickets_bought + 1;
+        const updatedUser = {
+          ...user,
+          points: finalValue,
+          tickets_bought: ticketsBought,
+        };
+        setUser(updatedUser);
+        setTickets((product.ticketsRemaining = product.ticketsRemaining - 1));
+        setProducts([...boughtProduct]);
+      });
+  };
+
   return (
     <Modal
       visible={modalVisible}
@@ -34,7 +75,10 @@ const BuyTicketModal = ({ setModalVisible, modalVisible, product, user }) => {
           </Pressable>
           <Pressable
             style={styles.confirmButton}
-            onPress={() => setModalVisible(!modalVisible)}
+            onPress={() => {
+              buyTicket(product, ticketPrice);
+              setModalVisible(!modalVisible);
+            }}
           >
             <View>
               <Text style={styles.closeText}>Confirm</Text>
@@ -63,6 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+    elevation: 5,
   },
   confirmationContainer: {
     height: "85%",

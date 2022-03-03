@@ -11,18 +11,19 @@ import {
 import NavMenu from "../components/NavMenu";
 import Product from "./Product";
 import { UserContext } from "../../App";
+import ChargePointsModal from "../components/ChargePointsModal";
 
 const Browse = ({ navigation }) => {
   const { userContext, loggedInContext, userIdContext } =
     useContext(UserContext);
   const loggedIn = loggedInContext[0];
   const setLoggedIn = loggedInContext[1];
-  const [products, setProducts] = useState([]);
-  const [productsLoaded, setProductsLoaded] = useState(false);
-  const userId = userIdContext[0];
   const setUserId = userIdContext[1];
   const user = userContext[0];
   const setUser = userContext[1];
+  const [products, setProducts] = useState([]);
+  const [productsLoaded, setProductsLoaded] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     fetch("https://boiling-forest-19458.herokuapp.com/products")
@@ -31,23 +32,6 @@ const Browse = ({ navigation }) => {
         setProducts(products);
         setProductsLoaded(true);
       });
-
-    if (userId !== 0) {
-      fetch("https://boiling-forest-19458.herokuapp.com/user", {
-        headers: {
-          user: userId,
-        },
-      }).then((r) => {
-        if (r.ok) {
-          r.json().then((userData) => {
-            setUser(userData);
-            setLoggedIn(true);
-          });
-        } else {
-          setLoggedIn(false);
-        }
-      });
-    }
 
     const getData = async () => {
       try {
@@ -62,7 +46,12 @@ const Browse = ({ navigation }) => {
 
   const product = products.map((product) => {
     return (
-      <Product key={product.id} product={product} navigation={navigation} />
+      <Product
+        key={product.id}
+        product={product}
+        navigation={navigation}
+        setProducts={setProducts}
+      />
     );
   });
 
@@ -87,16 +76,22 @@ const Browse = ({ navigation }) => {
           )}
         </View>
       </ScrollView>
-      {productsLoaded ? (
+      {productsLoaded && loggedIn ? (
         <Pressable
           style={styles.charge}
           onPress={() => {
-            alert("Charge pressed");
+            setModalVisible(!modalVisible);
           }}
         >
           <Text style={styles.chargeText}>Charge points</Text>
         </Pressable>
       ) : null}
+      <ChargePointsModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        user={user}
+        setUser={setUser}
+      />
     </View>
   );
 };

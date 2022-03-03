@@ -2,9 +2,12 @@ import React from "react";
 import { Text, View, StyleSheet, Image, Pressable } from "react-native";
 import moment from "moment";
 
-const Product = ({ product, navigation }) => {
+const Product = ({ product, navigation, setProducts }) => {
   const productViewHandler = (product) => {
-    navigation.navigate("Product", { product: product });
+    navigation.navigate("Product", {
+      product: product,
+      setProducts: setProducts,
+    });
   };
 
   //Moment.js - checks if the product is new (created at least 3 days ago)

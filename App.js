@@ -6,9 +6,10 @@ import Profile from "./src/screens/Profile";
 import Browse from "./src/screens/Browse";
 import ProductDetail from "./src/screens/ProductDetail";
 import Login from "./src/screens/Login";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Account from "./src/screens/Account";
 import Tickets from "./src/screens/Tickets";
+import Sell from "./src/screens/Sell";
 
 const Stack = createNativeStackNavigator();
 export const UserContext = createContext();
@@ -30,6 +31,26 @@ function App() {
     seller_reviews: [],
   });
 
+  //Logs the user in using the encrypted hash from login fetch
+  useEffect(() => {
+    if (userId !== 0) {
+      fetch("https://boiling-forest-19458.herokuapp.com/user", {
+        headers: {
+          user: userId,
+        },
+      }).then((r) => {
+        if (r.ok) {
+          r.json().then((userData) => {
+            setUser(userData);
+            setLoggedIn(true);
+          });
+        } else {
+          setLoggedIn(false);
+        }
+      });
+    }
+  }, [userId]);
+
   return (
     <UserContext.Provider
       value={{
@@ -47,6 +68,7 @@ function App() {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Account" component={Account} />
           <Stack.Screen name="Tickets" component={Tickets} />
+          <Stack.Screen name="Sell" component={Sell} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>

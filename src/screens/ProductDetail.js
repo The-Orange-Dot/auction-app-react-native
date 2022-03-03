@@ -20,6 +20,8 @@ const ProductDetail = ({ route, navigation }) => {
   const loggedIn = loggedInContext[0];
   const setLoggedIn = loggedInContext[1];
   const user = userContext[0];
+  const setUser = userContext[1];
+  const [tickets, setTickets] = useState(route.params.product.ticketsRemaining);
 
   const pricePerTicket =
     route.params.product.price / route.params.product.tickets;
@@ -62,28 +64,35 @@ const ProductDetail = ({ route, navigation }) => {
                 <View style={styles.ticketsRemaining}>
                   <Text style={styles.ticketTitle}>Tickets Remaining: </Text>
                   <Text>
-                    {route.params.product.ticketsRemaining} /{" "}
-                    {route.params.product.tickets}
+                    {tickets} / {route.params.product.tickets}
                   </Text>
                 </View>
               </View>
             )}
           </View>
-          <Pressable
-            style={styles.loginContainer}
-            onPress={() => {
-              navigation.navigate("Login");
-            }}
-          >
-            {!loggedIn && !route.params.product.finished ? (
+
+          {!loggedIn && !route.params.product.finished ? (
+            <Pressable
+              style={styles.loginContainer}
+              onPress={() => {
+                navigation.navigate("Login");
+              }}
+            >
               <Text style={styles.login}>Login to buy a ticket!</Text>
-            ) : null}
-          </Pressable>
+            </Pressable>
+          ) : (
+            <View style={styles.loginContainer}>
+              {route.params.product.finished ? null : (
+                <Text style={styles.login}>This is your listing</Text>
+              )}
+            </View>
+          )}
         </View>
       </ScrollView>
       <View style={styles.ticket}>
         {loggedIn ? (
-          route.params.product.finished ? null : (
+          route.params.product.finished ||
+          route.params.product.user.id === user.id ? null : (
             <Pressable
               onPress={() => {
                 setModalVisible(!modalVisible);
@@ -99,6 +108,10 @@ const ProductDetail = ({ route, navigation }) => {
         setModalVisible={setModalVisible}
         product={route.params.product}
         user={user}
+        setUser={setUser}
+        setProducts={route.params.setProducts}
+        setTickets={setTickets}
+        tickets={tickets}
       />
     </>
   );
