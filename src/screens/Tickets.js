@@ -17,6 +17,7 @@ const Tickets = ({
   user,
   products,
   setProducts,
+  setUser,
 }) => {
   const [selected, setSelected] = useState("bidding");
   const [sellerProduct, setSellerProduct] = useState([]);
@@ -40,9 +41,12 @@ const Tickets = ({
 
   //Maps through Buy Items
   const boughtProducts = products.map((product) => {
-    const ticketsHeld = product.buyers
-      .split(", ")
-      .filter((num) => (num = String(product.user.id))).length;
+    const ticketsHeld =
+      product.buyers !== null
+        ? product.buyers
+            .split(", ")
+            .filter((num) => (num = String(product.user.id))).length
+        : 0;
 
     return (
       <View style={styles.buyerItemCard} key={product.id}>
@@ -96,6 +100,8 @@ const Tickets = ({
         navigation={navigation}
         loggedIn={loggedIn}
         setLoggedIn={setLoggedIn}
+        user={user}
+        setUser={setUser}
       />
       <View style={styles.body}>
         <Text style={styles.ticketHeader}>

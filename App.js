@@ -146,7 +146,7 @@ function App() {
           )}
         </Stack.Screen>
         <Stack.Screen name="Tickets">
-          {(props) => {
+          {(props) => (
             <Tickets
               {...props}
               loggedIn={loggedIn}
@@ -155,8 +155,8 @@ function App() {
               products={products}
               setProducts={setProducts}
               setUser={setUser}
-            />;
-          }}
+            />
+          )}
         </Stack.Screen>
         <Stack.Screen name="Sell">
           {(props) => (
