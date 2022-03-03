@@ -44,6 +44,9 @@ const BuyTicketModal = ({
       });
   };
 
+  const pricePerTicket = product.price / product.tickets;
+  const hasEnoughPoints = user.points - pricePerTicket > 0;
+
   return (
     <Modal
       visible={modalVisible}
@@ -53,16 +56,39 @@ const BuyTicketModal = ({
     >
       <View style={styles.modalContainer}>
         <View style={styles.confirmationContainer}>
-          <Text>You're about to buy 1 ticket for: </Text>
-          <Text>{product.name}</Text>
-          <Text>
-            for {numberWithCommas(product.price / product.tickets)} points.
-          </Text>
-          <Text>
-            You currently have {numberWithCommas(user.points)} points.
-          </Text>
+          <Text style={styles.productName}>{product.name}</Text>
+          <View style={styles.confirmationTextContainer}>
+            <View style={styles.pricePerTicket}>
+              <Text style={styles.pricePerTicketText}>
+                Points for 1 ticket:{" "}
+              </Text>
+              <Text style={styles.pricePerTicketTextBold}>
+                {numberWithCommas(pricePerTicket)} points.
+              </Text>
+            </View>
 
-          <Text>Please confirm you purchase</Text>
+            <View style={styles.pricePerTicket}>
+              <Text style={styles.pricePerTicketText}>You currently have:</Text>
+              <Text style={styles.pricePerTicketTextBold}>
+                {numberWithCommas(user.points)} points
+              </Text>
+            </View>
+            {hasEnoughPoints ? (
+              <>
+                <Text>
+                  You'll have {numberWithCommas(user.points - pricePerTicket)}{" "}
+                  points left
+                </Text>
+                <Text style={styles.notEnoughPoints}>
+                  Please confirm you purchase
+                </Text>
+              </>
+            ) : (
+              <Text style={styles.notEnoughPoints}>
+                You don't have enough points!
+              </Text>
+            )}
+          </View>
         </View>
         <View style={styles.modalButtons}>
           <Pressable
@@ -74,11 +100,19 @@ const BuyTicketModal = ({
             </View>
           </Pressable>
           <Pressable
-            style={styles.confirmButton}
-            onPress={() => {
-              buyTicket(product, ticketPrice);
-              setModalVisible(!modalVisible);
-            }}
+            style={
+              hasEnoughPoints
+                ? styles.confirmButton
+                : styles.disabledConfirmButton
+            }
+            onPress={
+              hasEnoughPoints
+                ? () => {
+                    buyTicket(product, ticketPrice);
+                    setModalVisible(!modalVisible);
+                  }
+                : null
+            }
           >
             <View>
               <Text style={styles.closeText}>Confirm</Text>
@@ -101,7 +135,7 @@ const styles = StyleSheet.create({
     top: "25%",
     backgroundColor: "white",
     width: 320,
-    height: 400,
+    height: 350,
     borderRadius: 10,
     flex: 1,
     justifyContent: "center",
@@ -111,6 +145,14 @@ const styles = StyleSheet.create({
   },
   confirmationContainer: {
     height: "85%",
+    alignItems: "center",
+  },
+  confirmationTextContainer: {
+    width: "100%",
+    height: "80%",
+    flex: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
   },
   cancelButton: {
     width: 100,
@@ -132,6 +174,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     margin: 5,
   },
+  disabledConfirmButton: {
+    width: 100,
+    maxHeight: 40,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
+    borderRadius: 20,
+    margin: 5,
+    opacity: 0.5,
+  },
   modalButtons: {
     width: "100%",
     flex: 1,
@@ -142,6 +195,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
+  productName: { textAlign: "center", fontSize: 20, fontWeight: "bold" },
+  pricePerTicket: { alignItems: "center" },
+  pricePerTicketText: { fontSize: 18 },
+  pricePerTicketTextBold: { fontSize: 18, fontWeight: "bold" },
+  notEnoughPoints: { fontWeight: "bold", fontSize: 15 },
 });
 
 export default BuyTicketModal;

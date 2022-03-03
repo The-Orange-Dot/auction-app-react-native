@@ -24,7 +24,6 @@ const ProductDetail = ({
 
   const pricePerTicket =
     route.params.product.price / route.params.product.tickets;
-
   return (
     <>
       <ScrollView>

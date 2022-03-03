@@ -166,6 +166,8 @@ function App() {
               setLoggedIn={setLoggedIn}
               setUser={setUser}
               user={user}
+              products={products}
+              setProducts={setProducts}
             />
           )}
         </Stack.Screen>

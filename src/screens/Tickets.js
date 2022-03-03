@@ -21,6 +21,7 @@ const Tickets = ({
 }) => {
   const [selected, setSelected] = useState("bidding");
   const [sellerProduct, setSellerProduct] = useState([]);
+  const [buyerProduct, setBuyerProduct] = useState([]);
   const [loaded, setIsLoaded] = useState(false);
 
   //Fetches products and filters them to find user's items
@@ -33,14 +34,14 @@ const Tickets = ({
       let sellerItems = products.filter((product) => {
         return product.user_id === user.id;
       });
-      setProducts(filteredItems);
+      setBuyerProduct(filteredItems);
       setSellerProduct(sellerItems);
       setIsLoaded(true);
     }
   }, []);
 
   //Maps through Buy Items
-  const boughtProducts = products.map((product) => {
+  const boughtProducts = buyerProduct.map((product) => {
     const ticketsHeld =
       product.buyers !== null
         ? product.buyers
@@ -49,7 +50,16 @@ const Tickets = ({
         : 0;
 
     return (
-      <View style={styles.buyerItemCard} key={product.id}>
+      <View
+        style={
+          product.finished
+            ? product.winner === user.id
+              ? styles.buyerItemCardWin
+              : styles.buyerItemCardLose
+            : styles.buyerItemCard
+        }
+        key={product.id}
+      >
         <View>
           <Image style={styles.image} source={{ uri: product.images }} />
         </View>
@@ -59,13 +69,25 @@ const Tickets = ({
           </View>
           <View>
             {product.ticketsRemaining === 0 ? (
-              <Text>Finished</Text>
+              <>
+                <Text>
+                  {product.winner === user.id
+                    ? "Winner!"
+                    : "Better luck next time"}
+                </Text>
+                {product.winner === user.id ? (
+                  <Text>Tap Here to contact Seller</Text>
+                ) : null}
+              </>
             ) : (
-              <Text>
-                Tickets remaining: {product.ticketsRemaining}/{product.tickets}
-              </Text>
+              <>
+                <Text>
+                  Tickets remaining: {product.ticketsRemaining}/
+                  {product.tickets}
+                </Text>
+                <Text>You're holding {ticketsHeld} tickets</Text>
+              </>
             )}
-            <Text>You're holding {ticketsHeld} tickets</Text>
           </View>
         </View>
       </View>
@@ -183,6 +205,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 1,
+  },
+  buyerItemCardWin: {
+    marginVertical: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    backgroundColor: "rgba(255, 0, 0, .5)",
+  },
+  buyerItemCardLose: {
+    marginVertical: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderColor: "gray",
+    backgroundColor: "rgba(0, 0, 0, .2)",
+    opacity: 0.4,
   },
   selectorContainer: {
     flexDirection: "row",

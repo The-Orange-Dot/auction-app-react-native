@@ -15,6 +15,8 @@ const Product = ({ product, navigation, setProducts }) => {
     });
   };
 
+  console.log(product);
+
   //Moment.js - checks if the product is new (created at least 3 days ago)
   const days = moment().diff(product.created_at, "days");
   const newProduct = days < 3;

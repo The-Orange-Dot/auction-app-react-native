@@ -11,34 +11,61 @@ import {
 import NavMenu from "../components/NavMenu";
 import { Picker } from "@react-native-picker/picker";
 
-const Sell = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
+const Sell = ({
+  navigation,
+  products,
+  setProducts,
+  loggedIn,
+  setLoggedIn,
+  user,
+  setUser,
+}) => {
   const [selected, setSelected] = useState("");
   const [itemName, setItemName] = useState("");
   const [images, setImages] = useState("");
-  const [price, setPrice] = useState("");
-  const [tickets, setTickets] = useState("");
+  const [price, setPrice] = useState(0);
+  const [tickets, setTickets] = useState(0);
   const [description, setDescription] = useState("");
   const [keywords, setKeywords] = useState("");
+  const [errorHandler, setErrorHandler] = useState("");
 
-  const sellSubmitHandler = (event) => {
-    fetch("https://boiling-forest-19458.herokuapp.com/products", {
-      method: "POST",
+  const sellSubmitHandler = () => {
+    if (itemName === "") {
+      setErrorHandler("You must have a title.");
+    } else if (selected === "") {
+      setErrorHandler("You must select a category.");
+    } else if (images === "") {
+      setErrorHandler("You must include a picture.");
+    } else if (price === 0 && price < 1000) {
+      setErrorHandler("Listing must be at least 1000 points.");
+    } else if (tickets === 0 && tickets < 5) {
+      setErrorHandler("Listing must have at least 5 tickets.");
+    } else if (description === "") {
+      setErrorHandler("You must include a description.");
+    } else {
+      fetch("https://boiling-forest-19458.herokuapp.com/products", {
+        method: "POST",
 
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: itemName,
-        category: selected,
-        images: images,
-        price: price,
-        tickets: tickets,
-        description: description,
-        keywords: keywords,
-      }),
-    });
-    //     .then((r) => r.json())
-    //     .then((newProduct) => {
-    //       setProducts([...products, newProduct]);
-    //     });
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: itemName,
+          category: selected,
+          images: images,
+          price: price,
+          tickets: tickets,
+          description: description,
+          keywords: keywords,
+          user: user,
+          user_id: user.id,
+        }),
+      })
+        .then((r) => r.json())
+        .then((newProduct) => {
+          setErrorHandler("");
+          setProducts([...products, newProduct]);
+          navigation.navigate("Browse");
+        });
+    }
   };
 
   return (
@@ -85,6 +112,7 @@ const Sell = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
         />
         <TextInput
           style={styles.textInput}
+          contextMenuHidden={true}
           keyboardType="phone-pad"
           placeholder="Total Points"
           onChangeText={(e) => {
@@ -93,6 +121,7 @@ const Sell = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
         />
         <TextInput
           style={styles.textInput}
+          contextMenuHidden={true}
           keyboardType="phone-pad"
           placeholder="Number of Tickets"
           onChangeText={(e) => {
@@ -118,9 +147,12 @@ const Sell = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
           }}
         />
       </View>
+      <Text style={styles.errorText}>{errorHandler}</Text>
       <Pressable
         style={styles.confirmButton}
-        onPress={() => sellSubmitHandler()}
+        onPress={() => {
+          sellSubmitHandler();
+        }}
       >
         <View>
           <Text style={styles.confirmText}>Confirm</Text>
@@ -133,7 +165,7 @@ const Sell = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
 const styles = StyleSheet.create({
   body: {
     width: Dimensions.get("window").width,
-    height: 650,
+    height: 600,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -178,6 +210,12 @@ const styles = StyleSheet.create({
   confirmText: {
     color: "white",
     fontWeight: "bold",
+  },
+  errorText: {
+    color: "red",
+    flex: 1,
+    width: "100%",
+    textAlign: "center",
   },
 });
 
