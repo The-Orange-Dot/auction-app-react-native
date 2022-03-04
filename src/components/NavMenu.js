@@ -46,6 +46,7 @@ const NavMenu = ({ navigation, loggedIn, setUser, setLoggedIn, user }) => {
                 style={styles.button}
                 onPress={() => {
                   setModalVisible(!modalVisible);
+                  setOpenMenu(!openMenu);
                 }}
               >
                 <Text style={styles.menuText}>Charge Points</Text>
@@ -125,17 +126,18 @@ const NavMenu = ({ navigation, loggedIn, setUser, setLoggedIn, user }) => {
 const styles = StyleSheet.create({
   menuLoggedIn: {
     position: "absolute",
-    zIndex: 1,
+    zIndex: 5,
     top: 70,
     right: 0,
     width: 250,
     height: 370,
     padding: 2,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
+    elevation: 5,
   },
   menuLoggedOut: {
     position: "absolute",
-    zIndex: 1,
+    zIndex: 5,
     top: 70,
     right: 0,
     width: 280,
@@ -151,6 +153,7 @@ const styles = StyleSheet.create({
     marginVertical: 1,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 4,
   },
   menuText: { color: "white" },
   quickViewContainer: {

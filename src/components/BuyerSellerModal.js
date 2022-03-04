@@ -65,13 +65,14 @@ const BuyerSellerModal = ({
 const styles = StyleSheet.create({
   modalContainer: {
     width: "80%",
-    height: "60%",
+    height: 470,
     backgroundColor: "white",
     position: "absolute",
     left: "10%",
-    top: "25%",
+    top: "15%",
     padding: "5%",
     alignItems: "center",
+    justifyContent: "center",
     elevation: 5,
     borderRadius: 10,
   },

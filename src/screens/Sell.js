@@ -7,6 +7,7 @@ import {
   TextInput,
   Dimensions,
   Pressable,
+  Image,
 } from "react-native";
 import NavMenu from "../components/NavMenu";
 import { Picker } from "@react-native-picker/picker";
@@ -69,7 +70,7 @@ const Sell = ({
   };
 
   return (
-    <ScrollView>
+    <ScrollView scrollEnabled={false}>
       <NavMenu
         navigation={navigation}
         loggedIn={loggedIn}
@@ -77,101 +78,119 @@ const Sell = ({
         user={user}
         setUser={setUser}
       />
-      <View style={styles.body}>
-        <Text style={styles.sellHeader}>Sell on MOXIE!</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Title (Max length: 40 chars)"
-          maxLength={40}
-          onChangeText={(e) => {
-            setItemName(e);
-          }}
-        />
-        <Picker
-          style={styles.picker}
-          selectedValue={selected}
-          onValueChange={(itemValue) => setSelected(itemValue)}
-        >
-          <Picker.Item label="---Category---" value="" />
-          <Picker.Item label="Clothing/Fashion" value="clothing" />
-          <Picker.Item label="Electronics" value="electronics" />
-          <Picker.Item label="Video Games" value="games" />
-          <Picker.Item label="Music" value="music" />
-          <Picker.Item label="Vintage" value="vintage" />
-          <Picker.Item label="Beauty" value="beauty" />
-          <Picker.Item label="Sports" value="sports" />
-          <Picker.Item label="Food/Drink" value="food/drink" />
-          <Picker.Item label="Hobbies" value="hobbies" />
-        </Picker>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Image link"
-          onChangeText={(e) => {
-            setImages(e);
-          }}
-        />
-        <TextInput
-          style={styles.textInput}
-          contextMenuHidden={true}
-          keyboardType="phone-pad"
-          placeholder="Total Points"
-          onChangeText={(e) => {
-            setPrice(e);
-          }}
-        />
-        <TextInput
-          style={styles.textInput}
-          contextMenuHidden={true}
-          keyboardType="phone-pad"
-          placeholder="Number of Tickets"
-          onChangeText={(e) => {
-            setTickets(e);
-          }}
-        />
-        <TextInput
-          style={styles.descriptionInput}
-          multiline={true}
-          placeholder="Description (Max length: 1000 chars)"
-          numberOfLines={10}
-          maxLength={1000}
-          onChangeText={(e) => {
-            setDescription(e);
-          }}
-        />
-        <TextInput
-          style={styles.textInput}
-          placeholder="KeyWords (Max length: 50 chars)"
-          maxLength={50}
-          onChangeText={(e) => {
-            setKeywords(e);
-          }}
-        />
-      </View>
-      <Text style={styles.errorText}>{errorHandler}</Text>
-      <Pressable
-        style={styles.confirmButton}
-        onPress={() => {
-          sellSubmitHandler();
-        }}
-      >
-        <View>
-          <Text style={styles.confirmText}>Confirm</Text>
+      <View style={styles.sellPageContainer}>
+        <View style={styles.body}>
+          <Text style={styles.sellHeader}>Sell on MOXIE!</Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Title (Max length: 40 chars)"
+            maxLength={40}
+            onChangeText={(e) => {
+              setItemName(e);
+            }}
+          />
+          <Picker
+            style={styles.picker}
+            selectedValue={selected}
+            onValueChange={(itemValue) => setSelected(itemValue)}
+            mode={"dropdown"}
+          >
+            <Picker.Item label="---Category---" value="" />
+            <Picker.Item label="Clothing/Fashion" value="clothing" />
+            <Picker.Item label="Electronics" value="electronics" />
+            <Picker.Item label="Video Games" value="games" />
+            <Picker.Item label="Music" value="music" />
+            <Picker.Item label="Vintage" value="vintage" />
+            <Picker.Item label="Beauty" value="beauty" />
+            <Picker.Item label="Sports" value="sports" />
+            <Picker.Item label="Food/Drink" value="food/drink" />
+            <Picker.Item label="Hobbies" value="hobbies" />
+          </Picker>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Image link"
+            onChangeText={(e) => {
+              setImages(e);
+            }}
+          />
+          <TextInput
+            style={styles.textInput}
+            contextMenuHidden={true}
+            keyboardType="phone-pad"
+            placeholder="Total Points"
+            onChangeText={(e) => {
+              setPrice(e);
+            }}
+          />
+          <TextInput
+            style={styles.textInput}
+            contextMenuHidden={true}
+            keyboardType="phone-pad"
+            placeholder="Number of Tickets"
+            onChangeText={(e) => {
+              setTickets(e);
+            }}
+          />
+          <TextInput
+            style={styles.descriptionInput}
+            multiline={true}
+            placeholder="Description (Max length: 1000 chars)"
+            numberOfLines={10}
+            maxLength={1000}
+            onChangeText={(e) => {
+              setDescription(e);
+            }}
+          />
+          <TextInput
+            style={styles.textInput}
+            placeholder="KeyWords (Max length: 50 chars)"
+            maxLength={50}
+            onChangeText={(e) => {
+              setKeywords(e);
+            }}
+          />
+          <Text style={styles.errorText}>{errorHandler}</Text>
+          <Pressable
+            style={styles.confirmButton}
+            onPress={() => {
+              sellSubmitHandler();
+            }}
+          >
+            <View>
+              <Text style={styles.confirmText}>Confirm</Text>
+            </View>
+          </Pressable>
         </View>
-      </Pressable>
+      </View>
+      <Image
+        style={styles.backgroundImage}
+        source={require("../../images/sell-background.png")}
+      />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  body: {
-    width: Dimensions.get("window").width,
-    height: 600,
+  sellPageContainer: {
+    height: 760,
+    paddingBottom: 120,
     justifyContent: "center",
     alignItems: "center",
+  },
+  body: {
+    width: "90%",
+    height: "95%",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginTop: "15%",
+    backgroundColor: "rgba(255, 255, 255, .9)",
+    paddingBottom: 10,
+    elevation: 2,
   },
   sellHeader: {
     fontSize: 25,
     margin: 20,
+    fontWeight: "bold",
   },
   textInput: {
     height: 35,
@@ -179,6 +198,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     marginVertical: 5,
     padding: 5,
+    backgroundColor: "rgba(255, 255, 255, .5)",
   },
   descriptionInput: {
     height: 150,
@@ -186,6 +206,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     marginVertical: 5,
     paddingHorizontal: 5,
+    backgroundColor: "rgba(255, 255, 255, .5)",
   },
   picker: {
     height: 35,
@@ -194,12 +215,11 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 5,
     borderWidth: 1,
-    backgroundColor: "#efefef",
+    backgroundColor: "rgba(255, 255, 255, .5)",
   },
   confirmButton: {
     width: 100,
     height: 40,
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "black",
@@ -212,10 +232,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   errorText: {
+    marginTop: 5,
     color: "red",
     flex: 1,
     width: "100%",
     textAlign: "center",
+    fontWeight: "bold",
+  },
+  backgroundImage: {
+    position: "absolute",
+    zIndex: -2,
+    transform: [{ translateX: -300 }, { translateY: 0 }, { scale: 0.9 }],
   },
 });
 

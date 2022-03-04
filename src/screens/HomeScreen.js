@@ -21,15 +21,7 @@ const HomeScreen = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
   };
 
   return (
-    <ScrollView
-      onScroll={(event) => {
-        const trigger1 = event.nativeEvent.contentOffset.y;
-
-        if (trigger1 > 100) {
-          test();
-        }
-      }}
-    >
+    <ScrollView scrollEnabled={false}>
       <StatusBar animated={true} backgroundColor="black" />
       <View style={styles.container}>
         <NavMenu
@@ -65,6 +57,7 @@ const HomeScreen = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
               </Pressable>
             )}
           </View>
+
           {/* <Image
             style={styles.happyGirl}
             source={require("../../images/happy.png")}
@@ -82,7 +75,7 @@ const HomeScreen = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
 
         {/* GSAP doesn't work for animations, find alternative later */}
         {/* Ticket pictures */}
-        {/* <View style={styles.ticketContainer}>
+        <View style={styles.ticketContainer}>
           <Image
             style={styles.ticket1}
             source={require("../../images/Ticket.png")}
@@ -95,7 +88,7 @@ const HomeScreen = ({ navigation, loggedIn, setLoggedIn, user, setUser }) => {
             style={styles.ticket3}
             source={require("../../images/Ticket.png")}
           />
-        </View> */}
+        </View>
         {/* <Text style={styles.howItWorks}>How it works</Text> */}
 
         {/* Info 1 text */}
@@ -155,18 +148,22 @@ const styles = StyleSheet.create({
     marginLeft: "10%",
     marginTop: 20,
   },
-  ticketContainer: { alignItems: "center", marginVertical: 100 },
+  ticketContainer: {
+    alignItems: "center",
+    marginVertical: 100,
+    transform: [{ rotate: "70deg" }, { scale: 1.3 }],
+  },
   ticket1: {
     position: "absolute",
-    transform: [{ rotate: "25deg" }, { translateY: -25 }],
+    transform: [{ rotate: "25deg" }, { translateY: -100 }, { translateX: -80 }],
   },
   ticket2: {
     position: "absolute",
-    transform: [{ rotate: "15deg" }, { translateY: -15 }],
+    transform: [{ rotate: "15deg" }, { translateY: -85 }, { translateX: -80 }],
   },
   ticket3: {
     position: "absolute",
-    transform: [{ rotate: "5deg" }, { translateY: -5 }],
+    transform: [{ rotate: "5deg" }, { translateY: -70 }, { translateX: -80 }],
   },
   howItWorks: {
     marginTop: "20%",
@@ -193,7 +190,7 @@ const styles = StyleSheet.create({
     zIndex: -2,
     opacity: 0.7,
     left: -500,
-    top: -900,
+    top: -850,
     transform: [{ rotate: "20deg" }],
   },
   happyGirl: {
