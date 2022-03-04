@@ -46,7 +46,6 @@ const NavMenu = ({ navigation, loggedIn, setUser, setLoggedIn, user }) => {
                 style={styles.button}
                 onPress={() => {
                   setModalVisible(!modalVisible);
-                  setOpenMenu(false);
                 }}
               >
                 <Text style={styles.menuText}>Charge Points</Text>

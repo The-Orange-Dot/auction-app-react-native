@@ -2983,6 +2983,18 @@
   "resolved" "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.9.tgz"
   "version" "4.2.9"
 
+"gsap-rn@^0.0.15":
+  "integrity" "sha512-HDO/7Ua96mSjXm8rx1Sn703CXKCzKZ0x0QiAZpnyaXgwJmhV0BGO+NQs89tV6ZSrDIEbbg8T5DHdqtnfhksv8A=="
+  "resolved" "https://registry.npmjs.org/gsap-rn/-/gsap-rn-0.0.15.tgz"
+  "version" "0.0.15"
+  dependencies:
+    "gsap" "^3.2.6"
+
+"gsap@^3.2.6":
+  "integrity" "sha512-JSGVYoC6da4pIjdF/yxFU6Rz8OojOIDkbooveZlfNg0+JIoFoRruyfWAEi6R/gUeNcuOiTqUIb0gi1nCNrHf8w=="
+  "resolved" "https://registry.npmjs.org/gsap/-/gsap-3.9.1.tgz"
+  "version" "3.9.1"
+
 "has-flag@^3.0.0":
   "integrity" "sha1-tdRU3CGZriJWmfNGfloH87lVuv0="
   "resolved" "https://registry.npmjs.org/has-flag/-/has-flag-3.0.0.tgz"

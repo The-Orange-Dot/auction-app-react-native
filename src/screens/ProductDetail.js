@@ -24,6 +24,7 @@ const ProductDetail = ({
 
   const pricePerTicket =
     route.params.product.price / route.params.product.tickets;
+
   return (
     <>
       <ScrollView>
@@ -98,7 +99,7 @@ const ProductDetail = ({
                 setModalVisible(!modalVisible);
               }}
             >
-              <Image source={require("../../images/Ticket.png")} />
+              <Image source={require("../../images/Ticket-big.png")} />
             </Pressable>
           )
         ) : null}

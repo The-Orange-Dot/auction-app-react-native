@@ -8,6 +8,7 @@ import {
   Pressable,
   Dimensions,
 } from "react-native";
+import BuyerSellerModal from "../components/BuyerSellerModal";
 import NavMenu from "../components/NavMenu";
 
 const Tickets = ({
@@ -23,6 +24,11 @@ const Tickets = ({
   const [sellerProduct, setSellerProduct] = useState([]);
   const [buyerProduct, setBuyerProduct] = useState([]);
   const [loaded, setIsLoaded] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [buyerSellerSelector, setBuyerSellerSelector] = useState("");
+  const [loadProduct, setLoadProduct] = useState({
+    user: [{ username: "", picture: "", seller_rating: 0 }],
+  });
 
   //Fetches products and filters them to find user's items
   useEffect(() => {
@@ -50,7 +56,7 @@ const Tickets = ({
         : 0;
 
     return (
-      <View
+      <Pressable
         style={
           product.finished
             ? product.winner === user.id
@@ -59,6 +65,15 @@ const Tickets = ({
             : styles.buyerItemCard
         }
         key={product.id}
+        onPress={
+          product.finished && product.winner === user.id
+            ? () => {
+                setModalVisible(!modalVisible);
+                setBuyerSellerSelector("winner");
+                setLoadProduct(product);
+              }
+            : null
+        }
       >
         <View>
           <Image style={styles.image} source={{ uri: product.images }} />
@@ -90,7 +105,7 @@ const Tickets = ({
             )}
           </View>
         </View>
-      </View>
+      </Pressable>
     );
   });
 
@@ -107,9 +122,13 @@ const Tickets = ({
           </View>
           <View>
             <Text>Total Price: {product.price}</Text>
-            <Text>
-              Tickets remaining: {product.ticketsRemaining}/{product.tickets}
-            </Text>
+            {product.finished ? (
+              <Text>FINISHED</Text>
+            ) : (
+              <Text>
+                Tickets remaining: {product.ticketsRemaining}/{product.tickets}
+              </Text>
+            )}
           </View>
         </View>
       </View>
@@ -180,6 +199,12 @@ const Tickets = ({
           </Text>
         </Pressable>
       </View>
+      <BuyerSellerModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        buyerSellerSelector={buyerSellerSelector}
+        product={loadProduct}
+      />
     </ScrollView>
   );
 };
