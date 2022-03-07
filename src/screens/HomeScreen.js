@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   findProducts: {
     width: "70%",
     fontSize: 25,
-    lineHeight: 25,
+    lineHeight: 30,
     alignSelf: "flex-start",
     marginLeft: "10%",
     marginTop: 20,
@@ -151,19 +151,19 @@ const styles = StyleSheet.create({
   ticketContainer: {
     alignItems: "center",
     marginVertical: 100,
-    transform: [{ rotate: "70deg" }, { scale: 1.3 }],
+    transform: [{ rotate: "70deg" }, { scale: 1.5 }],
   },
   ticket1: {
     position: "absolute",
-    transform: [{ rotate: "25deg" }, { translateY: -100 }, { translateX: -80 }],
+    transform: [{ rotate: "25deg" }, { translateY: -100 }, { translateX: -30 }],
   },
   ticket2: {
     position: "absolute",
-    transform: [{ rotate: "15deg" }, { translateY: -85 }, { translateX: -80 }],
+    transform: [{ rotate: "15deg" }, { translateY: -85 }, { translateX: -30 }],
   },
   ticket3: {
     position: "absolute",
-    transform: [{ rotate: "5deg" }, { translateY: -70 }, { translateX: -80 }],
+    transform: [{ rotate: "5deg" }, { translateY: -70 }, { translateX: -30 }],
   },
   howItWorks: {
     marginTop: "20%",
