@@ -5,7 +5,6 @@ import {
   View,
   StyleSheet,
   Pressable,
-  Dimensions,
   Image,
 } from "react-native";
 import NavMenu from "../components/NavMenu";
@@ -28,6 +27,7 @@ const Browse = ({
   const [searchFilter, setSearchFilter] = useState(products);
   const [filtering, setFiltering] = useState(false);
   const browseRef = useRef(null);
+  const [categorySelected, setCategorySelected] = useState("");
 
   //Scrolls user back to the top of product list
   const scrollToTop = () => {
@@ -59,12 +59,13 @@ const Browse = ({
   //Maps products
   const product = searchFilter.map((product) => {
     return (
-      <Product
-        key={product.id}
-        product={filtering ? product.item : product}
-        navigation={navigation}
-        setProducts={setProducts}
-      />
+      <View key={product.id}>
+        <Product
+          product={filtering ? product.item : product}
+          navigation={navigation}
+          setProducts={setProducts}
+        />
+      </View>
     );
   });
 
@@ -111,7 +112,9 @@ const Browse = ({
                         scrollToTop();
                       }}
                     >
-                      <Text style={styles.resetFilterText}>Reset filter</Text>
+                      <Text style={styles.resetFilterText}>
+                        {filtering ? "Reset filter" : "Back to top"}
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -127,16 +130,6 @@ const Browse = ({
           }
         </View>
       </ScrollView>
-      {productsLoaded && loggedIn ? (
-        <Pressable
-          style={styles.charge}
-          onPress={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <Text style={styles.chargeText}>Charge points</Text>
-        </Pressable>
-      ) : null}
 
       {/* Filter button */}
       <Pressable
@@ -144,6 +137,7 @@ const Browse = ({
         onPress={() => {
           setModalVisible(!modalVisible);
           setSearch("");
+          setCategorySelected("");
         }}
       >
         <Image
@@ -156,6 +150,9 @@ const Browse = ({
         setModalVisible={setModalVisible}
         setSearch={setSearch}
         submitFilterHandler={submitFilterHandler}
+        setProducts={setProducts}
+        categorySelected={categorySelected}
+        setCategorySelected={setCategorySelected}
       />
     </View>
   );
@@ -214,8 +211,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#f26867",
     elevation: 1,
     position: "absolute",
-    bottom: 10,
-    right: 10,
+    bottom: "2%",
+    right: "2%",
     justifyContent: "center",
     alignItems: "center",
   },
