@@ -81,11 +81,9 @@ const ProductDetail = ({
             >
               <Text style={styles.login}>Login to buy a ticket!</Text>
             </Pressable>
-          ) : (
-            <View style={styles.loginContainer}>
-              {route.params.product.finished ? null : (
-                <Text style={styles.login}>This is your listing</Text>
-              )}
+          ) : route.params.product.finished ? null : (
+            <View style={styles.yourListingContainer}>
+              <Text style={styles.yourListing}>This is your listing</Text>
             </View>
           )}
         </View>
@@ -206,6 +204,20 @@ const styles = StyleSheet.create({
     width: 80,
   },
   login: { textAlign: "center", fontWeight: "bold" },
+  yourListingContainer: {
+    position: "absolute",
+    right: 50,
+    bottom: 25,
+    width: 120,
+    maxHeight: 50,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    backgroundColor: "black",
+    borderRadius: 1000,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  yourListing: { textAlign: "center", fontWeight: "bold", color: "white" },
 });
 
 export default ProductDetail;
