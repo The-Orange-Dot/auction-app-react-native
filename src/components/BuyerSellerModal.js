@@ -5,7 +5,6 @@ import {
   View,
   StyleSheet,
   Pressable,
-  Dimensions,
   Image,
   TextInput,
 } from "react-native";
@@ -16,6 +15,7 @@ const BuyerSellerModal = ({
   modalVisible,
   setModalVisible,
   product,
+  buyerInfo,
 }) => {
   return (
     <Modal visible={modalVisible} animationType={"fade"} transparent={true}>
@@ -26,12 +26,26 @@ const BuyerSellerModal = ({
         <Text style={styles.productName}>{product.name}</Text>
         <Image
           style={styles.userPicture}
-          source={{ uri: product.user.picture }}
+          source={
+            buyerSellerSelector === "winner"
+              ? { uri: product.user.picture }
+              : { uri: buyerInfo.picture }
+          }
         />
-        <Text style={styles.username}>{product.user.username}</Text>
+        <Text style={styles.username}>
+          {buyerSellerSelector === "winner"
+            ? product.user.username
+            : buyerInfo.username}
+        </Text>
         <View>
-          <Text>Seller Rating:</Text>
-          <Text>{StarRating(product.user.seller_rating)}</Text>
+          <Text>
+            {buyerSellerSelector === "winner" ? "Seller" : "Buyer"} Rating:
+          </Text>
+          <Text>
+            {buyerSellerSelector === "winner"
+              ? StarRating(product.user.seller_rating)
+              : StarRating(buyerInfo.buyer_rating)}
+          </Text>
         </View>
 
         <View>

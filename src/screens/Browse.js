@@ -6,11 +6,15 @@ import {
   StyleSheet,
   Pressable,
   Image,
+  LogBox,
 } from "react-native";
 import NavMenu from "../components/NavMenu";
 import Product from "./Product";
 import FilterModal from "../components/FilterModal";
 import Fuse from "fuse.js";
+LogBox.ignoreLogs([
+  'Warning: Each child in a list should have a unique "key" prop.',
+]);
 
 const Browse = ({
   navigation,

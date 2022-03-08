@@ -29,6 +29,14 @@ const Tickets = ({
   const [loadProduct, setLoadProduct] = useState({
     user: [{ username: "", picture: "", seller_rating: 0 }],
   });
+  const [buyerInfo, setBuyerInfo] = useState({
+    username: "",
+    picture: "",
+    firstName: "",
+    lastName: "",
+    address: "",
+    seller_rating: 0,
+  });
 
   //Fetches products and filters them to find user's items
   useEffect(() => {
@@ -45,6 +53,15 @@ const Tickets = ({
       setIsLoaded(true);
     }
   }, []);
+
+  //Finds Winner of product
+  const findWinner = (userId) => {
+    fetch(`https://boiling-forest-19458.herokuapp.com/users/${userId}`, {
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((user) => setBuyerInfo(user));
+  };
 
   //Maps through Buy Items
   const boughtProducts = buyerProduct.map((product) => {
@@ -112,7 +129,20 @@ const Tickets = ({
   //Maps through Sell Items
   const sellerProducts = sellerProduct.map((product) => {
     return (
-      <View style={styles.buyerItemCard} key={product.id}>
+      <Pressable
+        style={styles.buyerItemCard}
+        key={product.id}
+        onPress={
+          product.finished && product.user_id === user.id
+            ? () => {
+                setModalVisible(!modalVisible);
+                setBuyerSellerSelector("selling");
+                setLoadProduct(product);
+                findWinner(product.winner);
+              }
+            : null
+        }
+      >
         <View>
           <Image style={styles.image} source={{ uri: product.images }} />
         </View>
@@ -131,7 +161,7 @@ const Tickets = ({
             )}
           </View>
         </View>
-      </View>
+      </Pressable>
     );
   });
 
@@ -204,6 +234,7 @@ const Tickets = ({
         setModalVisible={setModalVisible}
         buyerSellerSelector={buyerSellerSelector}
         product={loadProduct}
+        buyerInfo={buyerInfo}
       />
     </ScrollView>
   );
