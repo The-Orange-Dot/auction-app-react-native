@@ -7,9 +7,11 @@ import {
   Image,
   Pressable,
   Dimensions,
+  LogBox,
 } from "react-native";
 import BuyerSellerModal from "../components/BuyerSellerModal";
 import NavMenu from "../components/NavMenu";
+LogBox.ignoreLogs(["source.uri should not be an empty string"]);
 
 const Tickets = ({
   navigation,
@@ -151,13 +153,19 @@ const Tickets = ({
             <Text style={styles.name}>{product.name}</Text>
           </View>
           <View>
-            <Text>Total Price: {product.price}</Text>
             {product.finished ? (
-              <Text>FINISHED</Text>
+              <>
+                <Text>FINISHED</Text>
+                <Text>Tap here to contact Winner</Text>
+              </>
             ) : (
-              <Text>
-                Tickets remaining: {product.ticketsRemaining}/{product.tickets}
-              </Text>
+              <>
+                <Text>Total Price: {product.price}</Text>
+                <Text>
+                  Tickets remaining: {product.ticketsRemaining}/
+                  {product.tickets}
+                </Text>
+              </>
             )}
           </View>
         </View>

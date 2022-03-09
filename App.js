@@ -32,6 +32,15 @@ function App() {
     created_at: "2020-01-10T16:36:36.178Z",
     username: "",
   });
+  //Fetches Products
+  const fetchProducts = () => {
+    fetch("https://boiling-forest-19458.herokuapp.com/products")
+      .then((r) => r.json())
+      .then((items) => {
+        setProducts(items);
+        setProductsLoaded(true);
+      });
+  };
 
   //Logs the user in using the encrypted hash from login fetch
   useEffect(() => {
@@ -51,15 +60,6 @@ function App() {
         }
       });
     }
-
-    //Fetches Products
-    fetch("https://boiling-forest-19458.herokuapp.com/products")
-      .then((r) => r.json())
-      .then((items) => {
-        setProducts(items);
-        setProductsLoaded(true);
-      });
-
     const getData = async () => {
       try {
         const value = await AsyncStorage.getItem("user");
@@ -69,6 +69,8 @@ function App() {
       } catch (error) {}
     };
     getData().then((thing) => setUserId);
+
+    fetchProducts();
   }, [userId]);
 
   return (
@@ -108,6 +110,9 @@ function App() {
               productsLoaded={productsLoaded}
               setProducts={setProducts}
               products={products}
+              fetchProducts={fetchProducts}
+              setProductsLoaded={setProductsLoaded}
+              productsLoaded={productsLoaded}
             />
           )}
         </Stack.Screen>

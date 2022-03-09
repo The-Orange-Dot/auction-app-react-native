@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -25,6 +25,8 @@ const Browse = ({
   setProducts,
   products,
   productsLoaded,
+  fetchProducts,
+  setProductsLoaded,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [search, setSearch] = useState("");
@@ -32,6 +34,10 @@ const Browse = ({
   const [filtering, setFiltering] = useState(false);
   const browseRef = useRef(null);
   const [categorySelected, setCategorySelected] = useState("");
+
+  useEffect(async () => {
+    await Promise.all([fetchProducts(), setProducts(products)]);
+  }, []);
 
   //Scrolls user back to the top of product list
   const scrollToTop = () => {
